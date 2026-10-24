@@ -1,0 +1,931 @@
+﻿/* Subtle refinements keep the original emerald and frosted-glass palette. */
+.composer-wrap {
+    background: transparent;
+    padding-bottom: 1px;
+}
+.composer {
+    box-shadow:
+        0 6px 22px -10px #00000040,
+        inset 0 1px #ffffff08;
+    transition:
+        border-color 300ms ease,
+        box-shadow 300ms ease;
+}
+.composer:focus-within {
+    border-color: #dec78f66;
+    box-shadow:
+        0 6px 22px -10px #00000040,
+        0 0 0 3px #dec78f06;
+}
+.composer.is-pending {
+    border-color: #dec78f3b;
+}
+.request-progress {
+    height: 2px;
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 16px;
+    overflow: hidden;
+    border-radius: 2px;
+    pointer-events: none;
+}
+.request-progress::after {
+    content: '';
+    position: absolute;
+    width: 35%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, #dec78f99, transparent);
+    animation: request-glide 2.4s ease-in-out infinite;
+}
+.composer {
+    position: relative;
+}
+.loading-reflection {
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px 22px;
+    background: #bfdac105;
+    animation: appear 350ms ease-out;
+}
+.loading-reflection .thinking {
+    padding: 0;
+    margin-bottom: 18px;
+}
+.skeleton-line {
+    height: 7px;
+    margin-top: 12px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #b7c9ad09 15%, #b7c9ad19 45%, #b7c9ad09 75%);
+    background-size: 250% 100%;
+    animation: skeleton-shimmer 2.2s ease-in-out infinite;
+}
+.skeleton-line:nth-child(2) {
+    width: 88%;
+}
+.skeleton-line:nth-child(3) {
+    width: 72%;
+    animation-delay: 150ms;
+}
+.skeleton-line:nth-child(4) {
+    width: 48%;
+    animation-delay: 300ms;
+}
+.send-spinner {
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid #16362d44;
+    border-top-color: #16362d;
+    border-radius: 50%;
+    animation: spinner-turn 900ms linear infinite;
+}
+.message {
+    animation: reply-arrive 400ms ease-out;
+}
+.error-code {
+    display: block;
+    opacity: 0.7;
+    font-size: 9px;
+    margin-top: 6px;
+}
+.bot-companion {
+    width: 180px;
+    height: 155px;
+    margin: -15px auto 0;
+    position: relative;
+}
+.bot-canvas {
+    position: relative;
+    z-index: 1;
+    width: 180px;
+    height: 150px;
+}
+.bot-shadow {
+    position: absolute;
+    inset-block-end: 10px;
+    inset-inline-start: 55px;
+    width: 70px;
+    height: 9px;
+    border-radius: 50%;
+    background: #00000024;
+    filter: blur(5px);
+}
+.bot-fallback {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 60px;
+    color: var(--gold);
+}
+.chat-welcome.compact .bot-companion {
+    height: 110px;
+    margin-top: -25px;
+    transform: scale(0.75);
+    transform-origin: bottom center;
+}
+@keyframes request-glide {
+    from {
+        inset-inline-start: -35%;
+    }
+    to {
+        inset-inline-start: 100%;
+    }
+}
+@keyframes skeleton-shimmer {
+    0%,
+    100% {
+        background-position: 100% 0;
+    }
+    50% {
+        background-position: 0 0;
+    }
+}
+@keyframes spinner-turn {
+    to {
+        transform: rotate(360deg);
+    }
+}
+@keyframes reply-arrive {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .request-progress::after,
+    .skeleton-line,
+    .send-spinner,
+    .message,
+    .loading-reflection {
+        animation: none;
+    }
+    .request-progress::after {
+        inset-inline-start: 30%;
+    }
+}
+
+/* In-chat controls remain visible on mobile as well as desktop. */
+.chat-preferences {
+    border-radius: 16px;
+    padding: 18px;
+    margin-top: 22px;
+}
+.preference-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.source-options {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    flex: 1 1 260px;
+    min-width: 0;
+}
+.source-options legend,
+.focus-control > span {
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: block;
+}
+.source-segments {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    background: #061c191c;
+}
+.source-segment {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 10px 8px;
+    position: relative;
+    border-radius: 7px;
+    font-size: 11px;
+    cursor: pointer;
+    color: var(--muted);
+    border: 1px solid transparent;
+    transition:
+        color 200ms ease,
+        border-color 200ms ease,
+        background 200ms ease;
+}
+.source-segment input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+.source-segment:has(input:focus-visible) {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+}
+.source-segment.is-selected {
+    color: var(--gold);
+    background: #dec78f0e;
+    border-color: #dec78f40;
+    box-shadow: inset 0 1px #ffffff06;
+}
+.source-options:disabled .source-segment {
+    opacity: 0.5;
+    cursor: wait;
+}
+.focus-control {
+    flex: 1 1 175px;
+    min-width: 0;
+}
+.focus-control select {
+    width: 100%;
+    border-radius: 10px;
+    padding: 14px 10px;
+    border: 1px solid var(--line);
+    background: #bed3b608;
+    color: #d7e2d4;
+    font-size: 11px;
+}
+.preference-hint {
+    font-size: 10px;
+    line-height: 1.7;
+    color: var(--muted);
+    margin: 12px 0 16px;
+}
+.topic-suggestions {
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+}
+.topic-suggestions > span {
+    font-size: 10px;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 10px;
+}
+.topic-suggestions > div {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+.topic-suggestions button {
+    font-size: 10px;
+    color: #d0dcc7;
+    background: #bad2b207;
+    border: 1px solid #b4cfba25;
+    border-radius: 18px;
+    padding: 8px 13px;
+}
+.topic-suggestions button:hover:not(:disabled) {
+    background: #bad2b216;
+    border-color: #dec78f55;
+}
+@media (max-width: 760px) {
+    .chat-preferences {
+        padding: 14px;
+    }
+    .preference-row {
+        gap: 14px;
+    }
+    .source-segment {
+        padding: 10px 6px;
+        font-size: 10px;
+    }
+    .source-segment svg {
+        display: none;
+    }
+}
+
+.account-section {
+    margin-top: 20px;
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+}
+.account-caption {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin: 0 0 12px;
+}
+.account-signin {
+    width: 100%;
+    background: #dec78f0a;
+    border: 1px solid #dec78f45;
+    border-radius: 9px;
+    padding: 11px 8px;
+    font-size: 11px;
+    color: var(--gold);
+}
+.account-identity {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+.account-identity > span {
+    overflow-wrap: anywhere;
+}
+.account-identity button {
+    border: 0;
+    background: none;
+    color: var(--muted);
+    font-size: 10px;
+    white-space: nowrap;
+}
+.recent-section {
+    min-height: 0;
+    flex: 1;
+    margin: 18px 0;
+    overflow: auto;
+}
+.recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.recent-chat {
+    display: flex;
+    border: 1px solid transparent;
+    border-radius: 9px;
+}
+.recent-chat.is-active {
+    background: #dec78f0a;
+    border-color: #dec78f30;
+}
+.recent-open {
+    min-width: 0;
+    flex: 1;
+    padding: 10px;
+    text-align: start;
+    background: none;
+    border: 0;
+}
+.recent-open > span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+    color: #d7e2d4;
+}
+.recent-open time {
+    color: var(--muted);
+    font-size: 9px;
+    display: block;
+    margin-top: 5px;
+}
+.recent-delete {
+    padding: 5px 10px;
+    border: 0;
+    background: none;
+    color: var(--muted);
+    font-size: 18px;
+}
+.account-alert,
+.guest-save-banner {
+    margin: 0 46px 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 11px;
+    line-height: 1.8;
+}
+.guest-save-banner {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+.guest-save-banner p {
+    margin: 0;
+    color: var(--muted);
+}
+.guest-save-banner button {
+    flex-shrink: 0;
+    color: var(--gold);
+}
+.account-status {
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+}
+.auth-dialog {
+    color: inherit;
+    background: #173b33ed;
+    width: min(450px, calc(100% - 32px));
+    padding: 28px;
+    border-radius: 20px;
+    max-height: 90dvh;
+    overflow-y: auto;
+}
+.auth-dialog::backdrop {
+    background: #041614bb;
+    backdrop-filter: blur(10px);
+}
+.auth-tabs {
+    display: flex;
+    gap: 8px;
+}
+.auth-tabs button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: none;
+    color: var(--muted);
+    font-size: 12px;
+}
+.auth-tabs button[aria-pressed='true'] {
+    border-color: #dec78f66;
+    color: var(--gold);
+    background: #dec78f08;
+}
+.auth-dialog h2 {
+    font-size: 26px;
+    font-weight: 500;
+    margin: 24px 0 12px;
+}
+.auth-dialog p {
+    font-size: 12px;
+    line-height: 1.9;
+    color: var(--muted);
+}
+.auth-dialog label {
+    display: block;
+    margin: 18px 0;
+    font-size: 12px;
+}
+.auth-dialog input {
+    width: 100%;
+    display: block;
+    padding: 12px;
+    margin-top: 8px;
+    border: 1px solid var(--line);
+    background: #071d192e;
+    border-radius: 9px;
+    color: inherit;
+    outline-offset: 3px;
+}
+.auth-dialog input:focus-visible {
+    outline: 2px solid var(--gold);
+}
+.auth-dialog small {
+    display: block;
+    font-size: 10px;
+    line-height: 1.7;
+    color: var(--muted);
+    margin-top: 5px;
+}
+.auth-dialog .primary {
+    width: 100%;
+    margin-top: 20px;
+}
+.auth-dialog > .back {
+    width: 100%;
+    margin-top: 8px;
+}
+@media (max-width: 760px) {
+    .sidebar {
+        flex-wrap: wrap;
+    }
+    .account-section {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        flex-basis: 100%;
+    }
+    .account-section .account-caption {
+        margin-bottom: 8px;
+    }
+    .account-signin {
+        width: auto;
+        padding-inline: 14px;
+    }
+    .recent-section {
+        flex-basis: 100%;
+        margin: 4px 0 0;
+        max-height: 150px;
+    }
+    .recent-list {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+    .recent-chat {
+        min-width: 170px;
+        max-width: 210px;
+        flex-shrink: 0;
+    }
+    .recent-section > .overline {
+        margin: 0 0 6px;
+    }
+    .account-alert,
+    .guest-save-banner {
+        margin-inline: 18px;
+    }
+    .guest-save-banner {
+        flex-wrap: wrap;
+    }
+}
+
+/* A more composed welcome: closer to the header, with an illuminated glass card. */
+.onboarding {
+    margin-block-start: 2px;
+}
+.welcome-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #dec78f80;
+    margin: 0 auto 14px;
+}
+.welcome-ornament > span {
+    width: 46px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #dec78f55);
+}
+.welcome-ornament > span:last-child {
+    transform: scaleX(-1);
+}
+.onboarding .intro-decoration {
+    width: 52px;
+    height: 52px;
+    border-radius: 18px;
+    margin-bottom: 15px;
+    position: relative;
+    background: radial-gradient(circle at 30% 15%, #dec78f16, #b6cba708 65%);
+    box-shadow:
+        0 0 60px #c5c38b0c,
+        inset 0 1px #fff5cd10;
+}
+.onboarding .intro-decoration::before {
+    content: '';
+    position: absolute;
+    inset: -7px;
+    border: 1px solid #dec78f10;
+    border-radius: 23px;
+    transform: rotate(-8deg);
+}
+.onboarding > .overline {
+    margin: 8px 0 12px;
+    font-size: 9px;
+    letter-spacing: 2.4px;
+}
+.onboarding h1 {
+    margin: 10px 0 12px;
+    font-size: clamp(30px, 3vw, 40px);
+    letter-spacing: -1.5px;
+}
+.onboarding .intro-copy {
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 22px;
+}
+.welcome-screen .onboard-card {
+    position: relative;
+    padding: 20px;
+    max-width: 470px;
+    background: linear-gradient(135deg, #c4dfc60c, #dce6cf04);
+    border-color: #d1dec12b;
+    box-shadow:
+        0 18px 60px -25px #00000050,
+        inset 0 1px #e5efcf0a;
+    overflow: hidden;
+}
+.welcome-screen .onboard-card::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 18%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #dec78f88, transparent);
+}
+.welcome-screen .welcome-line {
+    padding: 9px 11px;
+    margin-bottom: 7px;
+    gap: 12px;
+    border: 1px solid #d2e6c80b;
+    border-radius: 10px;
+    background: #b6d1b504;
+    font-size: 12px;
+}
+.welcome-feature-icon {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 9px;
+    border: 1px solid #dec78f20;
+    background: #dec78f08;
+}
+.welcome-feature-icon svg {
+    width: 16px;
+    height: 16px;
+}
+.feature-index {
+    margin-inline-start: auto;
+    font-size: 9px;
+    color: #dec78f66;
+    letter-spacing: 1px;
+    font-variant-numeric: tabular-nums;
+}
+.welcome-screen .privacy-copy {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 10px;
+    line-height: 1.8;
+    margin: 15px 5px 0;
+}
+.welcome-screen .privacy-copy svg {
+    margin-top: 2px;
+    color: #b8c69c;
+}
+.welcome-screen .onboard-actions {
+    margin-top: 17px;
+}
+.welcome-screen .primary {
+    padding: 13px 18px;
+    background: linear-gradient(120deg, #dfcf9f, #cdb681);
+    box-shadow:
+        0 5px 18px #00000015,
+        inset 0 1px #fff3cc40;
+}
+.onboarding .step-dots {
+    margin-top: 18px;
+}
+.onboarding .step-caption {
+    margin-top: 7px;
+}
+@media (min-width: 1500px) {
+    .onboarding {
+        margin-block-start: 12px;
+    }
+}
+@media (max-height: 760px) and (min-width: 761px) {
+    main:has(.onboarding) header {
+        height: 76px;
+    }
+    .onboarding .intro-decoration {
+        width: 44px;
+        height: 44px;
+        margin-bottom: 10px;
+    }
+    .onboarding .intro-decoration > svg {
+        width: 25px;
+        height: 25px;
+    }
+    .welcome-ornament {
+        margin-bottom: 10px;
+    }
+    .onboarding h1 {
+        font-size: 34px;
+        margin-block: 7px 10px;
+    }
+    .onboarding .intro-copy {
+        margin-bottom: 17px;
+    }
+    .welcome-screen .onboard-card {
+        padding: 16px;
+    }
+    .welcome-screen .welcome-line {
+        padding-block: 6px;
+        margin-bottom: 5px;
+    }
+    .welcome-screen .privacy-copy {
+        margin-top: 12px;
+    }
+    .welcome-screen .onboard-actions {
+        margin-top: 12px;
+    }
+    .onboarding .step-dots {
+        margin-top: 13px;
+    }
+    main:has(.onboarding) footer {
+        padding-block: 12px;
+    }
+}
+@media (max-width: 760px) {
+    .onboarding {
+        margin-block-start: 4px;
+    }
+    .onboarding .intro-copy {
+        font-size: 12px;
+    }
+    .welcome-screen .onboard-card {
+        padding: 16px;
+    }
+    .welcome-screen .welcome-line {
+        font-size: 11px;
+    }
+}
+@media (prefers-reduced-motion: no-preference) {
+    .welcome-screen .onboard-card {
+        animation: reply-arrive 550ms ease-out;
+    }
+}
+
+/* Cinzel adds a restrained editorial character to display text only. */
+:root {
+    --font-heading: 'Cinzel', 'Noto Naskh Arabic', Georgia, serif;
+}
+h1,
+h2,
+h3,
+.brand,
+.overline,
+.mood-list button,
+.topic-suggestions button {
+    font-family: var(--font-heading);
+}
+.onboarding h1,
+.chat-welcome h1 {
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    line-height: 1.4;
+}
+.brand {
+    font-size: 16px;
+    letter-spacing: 0.3px;
+}
+.mood-list button,
+.topic-suggestions button {
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+html[dir='rtl'] h1,
+html[dir='rtl'] h2,
+html[dir='rtl'] h3,
+html[dir='rtl'] .brand,
+html[dir='rtl'] .overline,
+html[dir='rtl'] .mood-list button,
+html[dir='rtl'] .topic-suggestions button {
+    font-family: 'Noto Naskh Arabic', serif;
+    letter-spacing: 0;
+}
+@media (max-width: 760px) {
+    .sidebar .brand {
+        font-size: 14px;
+    }
+    .onboarding h1,
+    .chat-welcome h1 {
+        font-size: 29px;
+        letter-spacing: -0.3px;
+    }
+}
+
+/* SVGs use explicit boxes, independent of Cinzel/Arabic font baselines. */
+svg {
+    display: block;
+    vertical-align: middle;
+}
+.option-icon,
+.mood-list button > .mood-icon,
+.source-segment > svg {
+    flex-shrink: 0;
+    align-self: center;
+}
+.option-icon,
+.mood-list button > .mood-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.mood-list button > .mood-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 0;
+}
+.mood-list button {
+    line-height: 1.5;
+    min-height: 38px;
+}
+.primary > svg,
+.new-chat > svg,
+.reference-link > svg,
+.source-pill > svg,
+.reference-label > svg {
+    align-self: center;
+}
+.language-control {
+    align-items: center;
+}
+.language-control > svg {
+    width: 15px;
+    height: 15px;
+}
+.send {
+    padding: 0;
+    line-height: 1;
+}
+
+/* Let sidebar sections keep their content height instead of collapsing into scroll arrows. */
+.sidebar {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #a5bc9f38 transparent;
+}
+.sidebar > .brand,
+.sidebar > .new-chat,
+.sidebar > .nav-caption,
+.sidebar > .nav-item,
+.sidebar > .account-section,
+.sidebar > .side-bottom {
+    flex-shrink: 0;
+}
+.recent-section {
+    flex: 1 0 auto;
+    min-height: 145px;
+    overflow: visible;
+    margin-block: 20px;
+}
+.recent-section > .overline {
+    margin: 0 0 12px;
+}
+.recent-list {
+    max-height: clamp(160px, 32vh, 340px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #a5bc9f38 transparent;
+    padding-inline-end: 3px;
+}
+.recent-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 120px;
+    padding: 18px 16px;
+    border: 1px dashed #c5d7b828;
+    border-radius: 13px;
+    background: linear-gradient(145deg, #bed6b705, transparent);
+    text-align: center;
+}
+.recent-empty-icon {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    color: #dec78fa6;
+    background: #dec78f08;
+    border: 1px solid #dec78f18;
+}
+.recent-empty p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+.sidebar::-webkit-scrollbar,
+.recent-list::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+.sidebar::-webkit-scrollbar-thumb,
+.recent-list::-webkit-scrollbar-thumb {
+    background: #a5bc9f38;
+    border-radius: 8px;
+}
+.sidebar::-webkit-scrollbar-button,
+.recent-list::-webkit-scrollbar-button {
+    display: none;
+}
+@media (max-width: 760px) {
+    .sidebar {
+        overflow: visible;
+    }
+    .recent-section {
+        flex: 1 0 100%;
+        min-height: 0;
+        max-height: none;
+        margin-block: 8px 0;
+    }
+    .recent-list {
+        max-height: none;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 4px;
+    }
+    .recent-empty {
+        min-height: 72px;
+        flex-direction: row;
+        padding: 12px;
+        text-align: start;
+    }
+    .recent-empty-icon {
+        flex-shrink: 0;
+    }
+}

@@ -1,0 +1,176 @@
+﻿/* Recent history has a five-row viewport; only the rows scroll after loading more. */
+.sidebar:has(.recent-section) {
+    scrollbar-gutter: stable;
+}
+.sidebar:has(.recent-section) .new-chat {
+    margin-top: 24px;
+}
+.sidebar:has(.recent-section) .nav-caption {
+    margin-top: 22px;
+}
+.recent-section {
+    flex: 1 0 auto;
+    min-height: 0;
+    overflow: visible;
+}
+.recent-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+.recent-heading .overline {
+    margin: 0;
+}
+.recent-count {
+    display: grid;
+    place-items: center;
+    min-width: 24px;
+    padding: 3px 6px;
+    font-size: 9px;
+    color: var(--gold);
+    border: 1px solid #dec78f26;
+    background: #dec78f08;
+    border-radius: 7px;
+}
+.recent-list {
+    --recent-row-height: 58px;
+    --recent-row-gap: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--recent-row-gap);
+    max-height: calc(5 * var(--recent-row-height) + 4 * var(--recent-row-gap));
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 5px 0 0;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: #b4c39a66 #102f292e;
+    overscroll-behavior: contain;
+    scroll-padding-block: 6px;
+    border-radius: 10px;
+}
+html[dir='rtl'] .recent-list {
+    padding: 0 0 0 5px;
+}
+.recent-list:focus-visible {
+    outline: 1px solid var(--gold);
+    outline-offset: 3px;
+}
+.recent-chat {
+    flex: 0 0 var(--recent-row-height);
+    min-height: var(--recent-row-height);
+    max-width: 100%;
+    min-width: 0;
+    align-items: center;
+    background: #b8d0b405;
+    border: 1px solid #bbd5b40c;
+    border-radius: 10px;
+    transition:
+        background 180ms ease,
+        border-color 180ms ease;
+}
+.recent-chat:hover {
+    background: #b8d0b40c;
+    border-color: #bbd5b426;
+}
+.recent-chat.is-active {
+    border-color: #dec78f50;
+    background: #dec78f0c;
+}
+.recent-open {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    height: 100%;
+    padding: 9px 10px;
+    overflow: hidden;
+}
+.recent-open .recent-title {
+    width: 100%;
+    min-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    line-height: 1.5;
+}
+.recent-open time {
+    margin: 0;
+    font-size: 9px;
+    opacity: 0.8;
+    line-height: 1.2;
+}
+.recent-delete {
+    flex: 0 0 26px;
+    width: 26px;
+    height: 28px;
+    padding: 0;
+    margin-inline-end: 3px;
+    border-radius: 7px;
+}
+.recent-delete:hover:not(:disabled) {
+    background: #dec78f12;
+    color: var(--gold);
+}
+.recent-load-more {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 10px;
+    background: #b8d0b405;
+    border: 1px solid #bbd5b426;
+    border-radius: 9px;
+    color: var(--gold);
+}
+.recent-load-more:hover:not(:disabled) {
+    background: #dec78f0c;
+    border-color: #dec78f55;
+}
+.recent-list::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+.recent-list::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-track {
+    background: #102f292e;
+    border-radius: 10px;
+}
+.recent-list::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
+    background: #b4c39a66;
+    border-radius: 10px;
+    border: 1px solid #183d32;
+}
+.recent-list::-webkit-scrollbar-thumb:hover,
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: #dec78f88;
+}
+.recent-list::-webkit-scrollbar-button:single-button,
+.sidebar::-webkit-scrollbar-button:single-button {
+    display: none;
+    width: 0;
+    height: 0;
+}
+@media (max-width: 760px) {
+    .sidebar:has(.recent-section) .new-chat {
+        margin-top: 0;
+    }
+    .recent-section {
+        flex: 1 0 100%;
+    }
+    .recent-list {
+        max-height: calc(5 * var(--recent-row-height) + 4 * var(--recent-row-gap));
+        flex-direction: column;
+    }
+    .recent-chat {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+    }
+}

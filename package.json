@@ -1,0 +1,28 @@
+{
+  "name": "muslimenlight",
+  "version": "1.0.0",
+  "description": "Used to build Muslim enlight gemma free LLM Model",
+  "license": "ISC",
+  "author": "Hassan Durra Murad",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "client:dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "preview": "npm --prefix frontend run preview",
+    "format": "prettier --write frontend/src frontend/test frontend/index.html frontend/vite.config.js src index.js test",
+    "format:check": "prettier --check frontend/src frontend/test frontend/index.html frontend/vite.config.js src index.js test"
+  },
+  "dependencies": {
+    "@google/genai": "^2.31.0",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "nodemon": "^3.1.14"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.10"
+  }
+}
